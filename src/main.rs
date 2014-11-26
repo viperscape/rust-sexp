@@ -55,7 +55,7 @@ fn parse_sexp<'a> (re:Regex, reiter:&mut regex::FindCaptures, sexp:&'a str) -> V
 }
 
 fn main () {
-    let sxre = r#"(?P<lp>\()|(?P<rp>\))|(?P<qs>".*?")|(?P<num>(?P<fnum>-?\d+\.\d+)|(?P<inum>-?\d+))|(?P<s>[[:alnum:]+|[:punct:]+|[:graph:]+]+)"#;
+    let sxre = r#"(?P<lp>\()|(?P<rp>\))|(?P<qs>".*?"+)|(?P<num>(?P<fnum>-?\d+\.\d+)|(?P<inum>-?\d+))|(?P<s>[[:alnum:]+|[:punct:]+|[:graph:]+]+)"#;
 
     let re = match Regex::new(sxre){
         Ok(re) => re,

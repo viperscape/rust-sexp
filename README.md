@@ -8,5 +8,5 @@ from:
 
 to:
 ``` rust
-[Sexp([Sexp([Sym(data), QSym("quoted data"), Num(123), FNum(4.5)]), Sexp([Sym(data), Sexp([Sym(!@#), Sexp([FNum(4.5)]), QSym("(more" "data)")])])])]
+[Sexp([Sexp([Sym(data), QSym("quoted data"), Num(123), FNum(4.5)]), Sexp([Sym(data), Sexp([Sym(!@#), Sexp([FNum(4.5)]), QSym("(more"), QSym("data)")])])])]
 ```
