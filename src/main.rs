@@ -18,7 +18,7 @@ enum Exp {
     FNum(f64), 
     Sym(String),
     QSym(String),
-    Sexp(Box<Vec<Exp>>),
+    Sexp(Vec<Exp>),
 }
 
 fn parse_sexp<'a> (re:Regex, reiter:&mut regex::FindCaptures, sexp:&'a str) -> Vec<Exp> {
@@ -37,8 +37,7 @@ fn parse_sexp<'a> (re:Regex, reiter:&mut regex::FindCaptures, sexp:&'a str) -> V
 
                 if lp != "" {
                     let rvs = parse_sexp(re.clone(), reiter, sexp);
-                    vs.push(Exp::Sexp(box rvs));
-                    continue;
+                    vs.push(Exp::Sexp(rvs));
                 }
                 else if s != "" {vs.push(Exp::Sym(s.to_string()));}
 
@@ -107,3 +106,10 @@ fn bench_medium(b: &mut Bencher) {
     });
 }
 
+// Original
+// test bench_medium ... bench:    797373 ns/iter (+/- 46956)
+// test bench_small  ... bench:    228495 ns/iter (+/- 9405)
+
+// No Box
+// test bench_medium ... bench:    777011 ns/iter (+/- 22575)
+// test bench_small  ... bench:    231762 ns/iter (+/- 6020)
