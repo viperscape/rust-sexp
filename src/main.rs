@@ -95,19 +95,3 @@ fn bench_medium(b: &mut Bencher) {
         parse(sexp);
     });
 }
-
-// Original
-// test bench_medium ... bench:    797373 ns/iter (+/- 46956)
-// test bench_small  ... bench:    228495 ns/iter (+/- 9405)
-
-// No Box
-// test bench_medium ... bench:    777011 ns/iter (+/- 22575)
-// test bench_small  ... bench:    231762 ns/iter (+/- 6020)
-
-// No Box + No Recursion
-// test bench_medium ... bench:    532756 ns/iter (+/- 25839)
-// test bench_small  ... bench:    224482 ns/iter (+/- 10891)
-
-// No Box + No Recursion + For Loop
-// test bench_medium ... bench:    513237 ns/iter (+/- 28470)
-// test bench_small  ... bench:    217787 ns/iter (+/- 9845)
