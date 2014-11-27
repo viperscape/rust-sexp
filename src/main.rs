@@ -8,7 +8,7 @@ use regex::Regex;
 
 #[deriving(Show)]
 enum Exp {
-    Num(i32),
+    INum(i32),
     FNum(f64), 
     Sym(String),
     QSym(String),
@@ -40,7 +40,7 @@ fn parse_sexp<'a> (re:Regex, reiter:&mut regex::FindCaptures, sexp:&'a str) -> V
                 else if qs != "" {vs.push(Exp::QSym(qs.to_string()));}
 
                 
-                else if inum != "" {vs.push(Exp::Num(from_str::<i32>(inum).unwrap()));}
+                else if inum != "" {vs.push(Exp::INum(from_str::<i32>(inum).unwrap()));}
 
                 else if fnum != "" {vs.push(Exp::FNum(from_str::<f64>(fnum).unwrap()));}                
 
