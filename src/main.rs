@@ -1,6 +1,7 @@
 /*#![feature(phase)]
 #[phase(plugin)]
-extern crate regex_macros;*/
+extern crate regex_macros; //not sure if I should use regex! macro, haven't made up mind
+*/
 
 extern crate regex;
 use regex::Regex;
@@ -17,9 +18,8 @@ enum Exp {
 fn parse_sexp<'a> (re:Regex, reiter:&mut regex::FindCaptures, sexp:&'a str) -> Vec<Exp> {
     let mut vs: Vec<Exp> = Vec::new();
     
-    'sexp: loop {
-        let n = reiter.next();
-        match n {
+    loop {
+        match reiter.next() {
             Some(cap) => { //captures
 
                 let lp =  cap.name("lp"); 
@@ -31,20 +31,20 @@ fn parse_sexp<'a> (re:Regex, reiter:&mut regex::FindCaptures, sexp:&'a str) -> V
 
                 if lp != "" {
                     let rvs = parse_sexp(re.clone(), reiter, sexp);
-                    vs.push(Sexp(box rvs));
+                    vs.push(Exp::Sexp(box rvs));
                     continue;
                 }
-                else if s != "" {vs.push(Sym(s.to_string()));continue;}
+                else if s != "" {vs.push(Exp::Sym(s.to_string()));}
 
                 
-                else if qs != "" {vs.push(QSym(qs.to_string()));continue;}
+                else if qs != "" {vs.push(Exp::QSym(qs.to_string()));}
 
                 
-                else if inum != "" {vs.push(Num(from_str::<i32>(inum).unwrap()));continue;}
+                else if inum != "" {vs.push(Exp::Num(from_str::<i32>(inum).unwrap()));}
 
-                else if fnum != "" {vs.push(FNum(from_str::<f64>(fnum).unwrap()));continue;}                
+                else if fnum != "" {vs.push(Exp::FNum(from_str::<f64>(fnum).unwrap()));}                
 
-                else if rp != "" {break 'sexp;}
+                else if rp != "" {break;}
 
                 else {panic!("unknown token! {}",cap.at(0));}
             },
