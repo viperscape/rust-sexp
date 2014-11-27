@@ -2,4 +2,4 @@
 
 name = "rust-sexp"
 version = "0.0.1"
-authors = ["Chris Gill <chrisfgill@gmail.com>"]
+authors = ["Chris Gill <chrisfgill@gmail.com>", "Moritz Kaufmann"]
