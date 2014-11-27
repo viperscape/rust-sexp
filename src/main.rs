@@ -3,8 +3,14 @@
 extern crate regex_macros; //not sure if I should use regex! macro, haven't made up mind
 */
 
+#[cfg(test)]
+extern crate test;
 extern crate regex;
+
 use regex::Regex;
+#[cfg(test)]
+use test::Bencher;
+
 
 #[deriving(Show)]
 enum Exp {
@@ -54,7 +60,7 @@ fn parse_sexp<'a> (re:Regex, reiter:&mut regex::FindCaptures, sexp:&'a str) -> V
     vs
 }
 
-fn main () {
+fn parse(expr: &str) -> Vec<Exp> {
     let sxre = r#"(?P<lp>\()|(?P<rp>\))|(?P<qs>".*?"+)|(?P<num>(?P<fnum>-?\d+\.\d+)|(?P<inum>-?\d+))|(?P<s>[[:alnum:]+|[:punct:]+|[:graph:]+]+)"#;
 
     let re = match Regex::new(sxre){
@@ -62,9 +68,42 @@ fn main () {
         Err(err) => panic!("{}", err),
     };
 
+    let mut reiter = re.captures_iter(expr);
+    parse_sexp(re.clone(), &mut reiter,expr)
+}
+
+fn main () {
     let sexp = r#"((data "quoted data" 123 4.5)
  (data (!@# (4.5) "(more" "data)")))"#;
 
-    let mut reiter = re.captures_iter(sexp);
-    println!("{}",parse_sexp(re.clone(), &mut reiter,sexp));
+    println!("{}",parse(sexp));
 }
+
+#[bench]
+fn bench_small(b: &mut Bencher) {
+    let sexp = r#"((data "quoted data" 123 4.5)
+ (data (!@# (4.5) "(more" "data)")))"#;
+    b.bytes = sexp.len() as u64;
+    b.iter(|| {
+        parse(sexp);
+    });
+}
+
+#[bench]
+fn bench_medium(b: &mut Bencher) {
+    let sexp = r#"(((S) (NP VP))
+        ((VP) (V))
+        ((VP) (V NP))
+        ((V) died)
+        ((V) employed)
+        ((NP) nurses)
+        ((NP) patients)
+        ((NP) Medicenter)
+        ((NP) \"Dr Chan\"))
+    "#;
+    b.bytes = sexp.len() as u64;
+    b.iter(|| {
+        parse(sexp);
+    });
+}
+
