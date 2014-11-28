@@ -61,11 +61,42 @@ fn parse(expr: &str) -> Option<Vec<Exp>> {
     parse_sexp(re.clone(), expr)
 }
 
+
+
+fn write_sexp (vsexp: &Vec<Exp>) -> String {
+    let mut ws: String = String::new();
+    for n in vsexp.iter() {
+        let r = match *n {
+            Exp::INum(ref i) => i.to_string(),
+            Exp::FNum(ref f) => f.to_string(),
+            Exp::QSym(ref qs) => qs.to_string(),
+            Exp::Sym(ref s) => s.to_string(),
+            Exp::Sexp(ref sexp) => "(".to_string() + write_sexp(sexp).to_string() + ")".to_string(),
+        };
+        
+        let el = r+", ";
+        ws.push_str(el.as_slice());
+    }
+    let new_len = ws.len() - 2;
+    ws.truncate(new_len);
+    ws
+}
+
+
+
+
 fn main () {
     let sexp = r#"((data "quoted data" 123 4.5)
  (data (!@# (4.5) "(more" "data)")))"#;
 
-    println!("{}",parse(sexp));
+    let psexp = parse(sexp);
+
+    println!("{}",psexp);
+
+    match psexp {
+        Some(parsed) => println!("{}",write_sexp(&parsed)),
+        None => println!("none")
+    }
 }
 
 #[bench]
