@@ -1,4 +1,4 @@
-* Parsing S-Exp in Rust
+# Parsing S-Exp in Rust
 
 from:
 ```
@@ -8,5 +8,10 @@ from:
 
 to:
 ``` rust
-[Sexp([Sexp([Sym(data), QSym("quoted data"), Num(123), FNum(4.5)]), Sexp([Sym(data), Sexp([Sym(!@#), Sexp([FNum(4.5)]), QSym("(more"), QSym("data)")])])])]
+Some([Sexp([Sexp([Sym(data), QSym("quoted data"), INum(123), FNum(4.5)]), Sexp([Sym(data), Sexp([Sym(!@#), Sexp([FNum(4.5)]), QSym("(more"), QSym("data)")])])])])
+```
+
+and back:
+```
+((data "quoted data" 123 4.5) (data (!@# (4.5) "(more" "data)")))
 ```

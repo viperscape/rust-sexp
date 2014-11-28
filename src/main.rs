@@ -74,10 +74,10 @@ fn write_sexp (vsexp: &Vec<Exp>) -> String {
             Exp::Sexp(ref sexp) => "(".to_string() + write_sexp(sexp).to_string() + ")".to_string(),
         };
         
-        let el = r+", ";
+        let el = r+" "; //place a space between all elements in list
         ws.push_str(el.as_slice());
     }
-    let new_len = ws.len() - 2;
+    let new_len = ws.len() - 1; //truncate final space
     ws.truncate(new_len);
     ws
 }
