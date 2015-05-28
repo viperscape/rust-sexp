@@ -1,4 +1,4 @@
-extern crate "rust-sexp" as sexp;
+extern crate sexp;
 
 fn main () {
     let sexp = r#"((data "quoted data" 123 4.5)

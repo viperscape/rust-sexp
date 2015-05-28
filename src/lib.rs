@@ -1,7 +1,6 @@
-/*#![feature(plugin)]
-#[plugin] #[no_link]
-extern crate regex_macros; //not sure if I should use regex! macro, haven't made up mind
-*/
+#![feature(collections)]
+#![feature(convert)]
+#![feature(test)]
 
 #[cfg(test)]
 extern crate test;
@@ -71,11 +70,11 @@ pub fn write_sexp (vsexp: &Vec<Exp>) -> String {
             Exp::FNum(ref f) => f.to_string(),
             Exp::QSym(ref qs) => qs.to_string(),
             Exp::Sym(ref s) => s.to_string(),
-            Exp::Sexp(ref sexp) => "(".to_string() + write_sexp(sexp).as_slice() + ")",
+            Exp::Sexp(ref sexp) => "(".to_string() + write_sexp(sexp).as_str() + ")",
         };
         
         let el = r+" "; //place a space between all elements in list
-        ws.push_str(el.as_slice());
+        ws.push_str(el.as_str());
     }
     let new_len = ws.len() - 1; //truncate final space
     ws.truncate(new_len);
